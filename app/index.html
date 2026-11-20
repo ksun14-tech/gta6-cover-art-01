@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VICE FRAME — GTA 6 Cover Art Maker</title>
-<meta name="description" content="Turn your photos into GTA 6-style cover art: the multi-panel poster look with a Vice City neon-sunset grade. Free and offline — your photos never leave your machine.">
+<meta name="description" content="Drop in your photos and get GTA 6-style cover art: white-bordered panels over a Vice City neon sunset, with bold poster lettering. Free, offline, nothing uploaded.">
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
   <section class="controls" aria-label="Cover controls">
     <header>
       <h1>VICE <span>FRAME</span></h1>
-      <p class="tagline">Your photos, lettered up as GTA 6 cover art. Free, offline, nothing uploaded — every pixel is drawn on your own machine.</p>
+      <p class="tagline">Turn your photos into GTA 6 cover art. Free and offline — no uploads, no accounts; the cover is painted entirely on your machine.</p>
     </header>
 
     <div class="group">
@@ -32,7 +32,7 @@
       <input id="photo-file" type="file" accept="image/*" hidden>
       <div id="samples" class="samples" aria-label="Sample photos"></div>
       <button id="fill-all" type="button">Spread this photo across every panel</button>
-      <p class="hint">Click a panel on the cover to select it — the dashed outline shows which one you are editing. Drag its photo to reframe it, or nudge with the arrow keys (Shift = bigger steps, +/− = zoom). You can also drop a photo file anywhere on the page.</p>
+      <p class="hint">The dashed outline marks the panel you are editing — click any panel on the cover to switch. Drag its photo to reframe, tap the arrow keys for fine nudges (Shift makes bigger steps, +/− zoom), or drop a photo file anywhere on the page.</p>
     </div>
 
     <div class="group">
@@ -51,7 +51,7 @@
 
     <button id="export" type="button" class="export">Export PNG</button>
     <p id="status" role="status" class="status"></p>
-    <footer>An unofficial fan tool made for GTA VI launch week. Not affiliated with Rockstar Games or Take-Two Interactive.</footer>
+    <footer>An unofficial fan tool for GTA VI launch week. Not affiliated with Rockstar Games or Take-Two Interactive.</footer>
   </section>
   <section class="stage">
     <canvas id="cover" width="1080" height="1080" aria-label="Your GTA 6-style cover"></canvas>

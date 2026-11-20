@@ -1,17 +1,18 @@
-/* VICE FRAME's chrome: a dark control rail with neon accents, sitting beside the cover
-   stage. The last section restyles the page for screenshot scenes (body.shot-cover). */
+/* VICE FRAME's stylesheet: a deep-purple editor shell with neon accents, laid out as
+   a fixed control rail beside a fluid stage. The final block restyles the page for
+   screenshot scenes — when body carries .shot-cover, only the artwork remains. */
 
 :root {
   --ink: #0d0618;
-  --panel: #170b2e;
-  --panel-2: #1f0f3d;
+  --rail: #170b2e;
+  --field: #1f0f3d;
   --line: #3a1c63;
   --text: #f4eefc;
   --muted: #b7a8d9;
   --pink: #ff2e88;
   --orange: #ff8a3c;
   --gold: #ffd166;
-  --accent-gradient: linear-gradient(92deg, var(--pink), var(--orange));
+  --brand: linear-gradient(92deg, var(--pink), var(--orange));
 }
 
 * { box-sizing: border-box; }
@@ -19,8 +20,8 @@
 html, body {
   margin: 0;
   min-height: 100%;
-  background: radial-gradient(1200px 700px at 85% -10%, #45136e 0%, var(--ink) 55%);
   color: var(--text);
+  background: radial-gradient(1200px 700px at 85% -10%, #45136e 0%, var(--ink) 55%);
   font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -34,7 +35,7 @@ html, body {
   padding: 26px;
 }
 
-/* ---------------------------------------------------------------- the control rail */
+/* ---------------------------------------------------------- control rail */
 
 .controls {
   flex: 0 0 320px;
@@ -43,7 +44,7 @@ html, body {
   flex-direction: column;
   gap: 18px;
   padding: 22px 20px;
-  background: linear-gradient(180deg, var(--panel) 0%, var(--ink) 130%);
+  background: linear-gradient(180deg, var(--rail) 0%, var(--ink) 130%);
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
@@ -51,15 +52,15 @@ html, body {
 
 .controls h1 {
   margin: 0;
-  font-family: "Arial Black", "Franklin Gothic Heavy", Impact, sans-serif;
-  font-style: italic;
-  font-size: 34px;
-  letter-spacing: 0.5px;
   color: #fff;
+  font-family: "Arial Black", "Franklin Gothic Heavy", Impact, sans-serif;
+  font-size: 34px;
+  font-style: italic;
+  letter-spacing: 0.5px;
 }
 
 .controls h1 span {
-  background: var(--accent-gradient);
+  background: var(--brand);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -77,19 +78,25 @@ html, body {
 
 .group h2 {
   margin: 0;
+  color: var(--gold);
   font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold);
 }
 
-label { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; font-weight: 600; }
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
 
 input[type="text"], select {
   font: inherit;
   padding: 8px 10px;
   color: var(--text);
-  background: var(--panel-2);
+  background: var(--field);
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -101,7 +108,7 @@ button {
   font-weight: 700;
   padding: 9px 12px;
   color: var(--text);
-  background: var(--panel-2);
+  background: var(--field);
   border: 1px solid var(--line);
   border-radius: 8px;
   cursor: pointer;
@@ -111,14 +118,11 @@ button:hover { border-color: var(--pink); }
 
 button.primary, .export {
   color: #fff;
-  background: var(--accent-gradient);
+  background: var(--brand);
   border: 0;
 }
 
-:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .samples { display: flex; flex-wrap: wrap; gap: 8px; }
 
@@ -130,7 +134,7 @@ button.primary, .export {
 
 .samples .sample:hover { background: var(--line); }
 
-.panel-label { margin: 0; font-weight: 700; color: #fff; }
+.panel-label { margin: 0; color: #fff; font-weight: 700; }
 
 .hint { margin: 0; color: var(--muted); font-size: 12.5px; }
 
@@ -150,7 +154,7 @@ button.primary, .export {
   border-top: 1px solid var(--line);
 }
 
-/* ---------------------------------------------------------------- the stage */
+/* ---------------------------------------------------------- the stage */
 
 .stage { flex: 1 1 auto; display: flex; justify-content: center; }
 
@@ -172,10 +176,9 @@ canvas#cover:active { cursor: grabbing; }
   canvas#cover { width: 100%; }
 }
 
-/* ---------------------------------------------------------------- screenshot scenes
-   ?shot=cover: the rail disappears and the canvas fills the window, letterboxed on the
-   deep-purple the cover's own sky starts from. */
+/* ---------------------------------------------------------- screenshot scenes */
 
+/* ?shot=cover: rail gone, canvas letterboxed full-window on the cover's own ink. */
 body.shot-cover .controls { display: none; }
 body.shot-cover .app { max-width: none; padding: 0; }
 body.shot-cover .stage { display: block; }

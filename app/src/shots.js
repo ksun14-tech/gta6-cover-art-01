@@ -1,49 +1,52 @@
-// shots.js — the fixed scenes the entry's screenshots are taken from.
+// shots.js — deterministic screenshot scenes, addressed entirely by URL query.
 //
-// The app is driven entirely by the URL query, for example:
-//   ?shot=cover&template=boxart&size=post&photos=neon,car&title=Vice%20City%20Heat
-//     shot=cover   → the cover alone fills the window (body.shot-cover hides the rail)
-//     shot=editor  → the whole editor, with the same scene loaded into it
-//     template     → a layout key from cover.js (boxart, triptych, hero, strip)
-//     size         → an export-size key (post, portrait, story, wide)
-//     photos       → sample ids, one per panel, in panel order
-//     title / eyebrow / subtitle → the lettering, verbatim
+// The entry's screenshots are captured from URLs like:
+//   ?shot=cover&template=triptych&size=post&photos=car,neon,pier&title=Sunset%20Chase
 //
-// When the scene has painted, window.__shotReady becomes true (after two animation
-// frames, so the canvas is genuinely on screen) and a screenshot tool can fire.
+//   shot      "cover" shows the artwork alone (the body gets the shot-cover class,
+//             which hides the control rail); "editor" shows the whole app.
+//   template  a layout key from cover.js: boxart | triptych | hero | strip
+//   size      an export-size key: post | portrait | story | wide
+//   photos    comma-separated sample ids, one per panel, in panel order
+//   title / eyebrow / subtitle   the lettering, taken verbatim
+//
+// Once the scene is fully painted, window.__shotReady is set — two animation frames
+// after the final redraw, so the frame a tool captures is the frame a user would see.
 
-/** Sample id → file, mirroring the editor's own sample list. */
-const SAMPLE_URLS = {
+/** Sample ids the scene language accepts, mapped to their files under app/samples. */
+const SAMPLE_FILES = {
   neon: 'samples/neon.jpg',
   car: 'samples/car.jpg',
   boulevard: 'samples/boulevard.jpg',
   pier: 'samples/pier.jpg',
 };
 
-/** The scene used when a screenshot URL leaves the photos unspecified. */
-const FALLBACK_PHOTOS = 'neon,car,boulevard,pier,neon';
+/** Panels filled when a scene URL does not say: a spread across all four samples. */
+const DEFAULT_PHOTOS = ['neon', 'car', 'boulevard', 'pier', 'neon'];
 
 /**
- * Applies the scene described by `query` through the editor's API (see main.js) and
- * signals readiness. Photos load one panel at a time, in order, so panel numbering in
- * the scene matches panel numbering on the cover.
+ * Builds the scene `query` describes through the editor API supplied by main.js
+ * ({ setTemplate, setSize, setText, setSlotImage, redraw }) and flags readiness.
+ * Photos are placed sequentially so panel i of the URL is panel i of the cover.
  */
 export async function runShot(query, api) {
   if (query.get('shot') === 'cover') document.body.classList.add('shot-cover');
 
-  if (query.get('template')) api.setTemplate(query.get('template'));
-  if (query.get('size')) api.setSize(query.get('size'));
-  for (const key of ['title', 'eyebrow', 'subtitle']) {
-    const value = query.get(key);
-    if (value !== null) api.setText(key, value);
+  const template = query.get('template');
+  if (template) api.setTemplate(template);
+  const size = query.get('size');
+  if (size) api.setSize(size);
+  for (const field of ['title', 'eyebrow', 'subtitle']) {
+    const value = query.get(field);
+    if (value !== null) api.setText(field, value);
   }
 
-  const photoIds = (query.get('photos') ?? FALLBACK_PHOTOS)
+  const requested = (query.get('photos') ?? DEFAULT_PHOTOS.join(','))
     .split(',')
-    .map((id) => id.trim())
-    .filter((id) => SAMPLE_URLS[id]);
-  for (let panel = 0; panel < photoIds.length; panel += 1) {
-    await api.setSlotImage(panel, SAMPLE_URLS[photoIds[panel]]);
+    .map((id) => id.trim());
+  const usable = requested.filter((id) => Object.hasOwn(SAMPLE_FILES, id));
+  for (let panel = 0; panel < usable.length; panel += 1) {
+    await api.setSlotImage(panel, SAMPLE_FILES[usable[panel]]);
   }
 
   api.redraw();
