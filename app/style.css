@@ -1,4 +1,5 @@
-/* VICE FRAME's editor chrome: a dark control rail with neon accents beside the cover stage. */
+/* VICE FRAME's chrome: a dark control rail with neon accents, sitting beside the cover
+   stage. The last section restyles the page for screenshot scenes (body.shot-cover). */
 
 :root {
   --ink: #0d0618;
@@ -10,6 +11,7 @@
   --pink: #ff2e88;
   --orange: #ff8a3c;
   --gold: #ffd166;
+  --accent-gradient: linear-gradient(92deg, var(--pink), var(--orange));
 }
 
 * { box-sizing: border-box; }
@@ -27,23 +29,23 @@ html, body {
   gap: 28px;
   align-items: flex-start;
   justify-content: center;
-  padding: 26px;
   max-width: 1460px;
   margin: 0 auto;
+  padding: 26px;
 }
 
 /* ---------------------------------------------------------------- the control rail */
 
 .controls {
-  width: 320px;
   flex: 0 0 320px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   gap: 18px;
+  padding: 22px 20px;
   background: linear-gradient(180deg, var(--panel) 0%, var(--ink) 130%);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 22px 20px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
 }
 
@@ -57,7 +59,7 @@ html, body {
 }
 
 .controls h1 span {
-  background: linear-gradient(92deg, var(--pink), var(--orange));
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -66,11 +68,11 @@ html, body {
 .tagline { margin: 8px 0 0; color: var(--muted); font-size: 13.5px; }
 
 .group {
-  border-top: 1px solid var(--line);
-  padding-top: 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
 }
 
 .group h2 {
@@ -81,57 +83,72 @@ html, body {
   color: var(--gold);
 }
 
-label { display: flex; flex-direction: column; gap: 5px; font-weight: 600; font-size: 13.5px; }
+label { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; font-weight: 600; }
 
 input[type="text"], select {
   font: inherit;
   padding: 8px 10px;
+  color: var(--text);
+  background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--panel-2);
-  color: var(--text);
 }
 
-input[type="range"] { accent-color: var(--pink); width: 100%; }
+input[type="range"] { width: 100%; accent-color: var(--pink); }
 
 button {
   font: inherit;
   font-weight: 700;
   padding: 9px 12px;
+  color: var(--text);
+  background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--panel-2);
-  color: var(--text);
   cursor: pointer;
 }
 
 button:hover { border-color: var(--pink); }
 
-button.primary {
-  background: linear-gradient(92deg, var(--pink), var(--orange));
-  border: 0;
+button.primary, .export {
   color: #fff;
+  background: var(--accent-gradient);
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 .samples { display: flex; flex-wrap: wrap; gap: 8px; }
-.samples .sample { padding: 6px 10px; font-size: 13px; border-radius: 999px; }
+
+.samples .sample {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+
+.samples .sample:hover { background: var(--line); }
 
 .panel-label { margin: 0; font-weight: 700; color: #fff; }
+
 .hint { margin: 0; color: var(--muted); font-size: 12.5px; }
 
 .export {
-  background: linear-gradient(92deg, var(--pink), var(--orange));
-  border: 0;
-  color: #fff;
-  font-size: 16px;
   padding: 13px;
+  font-size: 16px;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(255, 46, 136, 0.35);
 }
 
-.status { margin: 0; min-height: 1.2em; color: var(--gold); font-size: 13.5px; }
+.status { min-height: 1.2em; margin: 0; color: var(--gold); font-size: 13.5px; }
 
-footer { color: var(--muted); font-size: 11.5px; border-top: 1px solid var(--line); padding-top: 10px; }
+.controls footer {
+  padding-top: 10px;
+  color: var(--muted);
+  font-size: 11.5px;
+  border-top: 1px solid var(--line);
+}
 
 /* ---------------------------------------------------------------- the stage */
 
@@ -151,21 +168,24 @@ canvas#cover:active { cursor: grabbing; }
 
 @media (max-width: 900px) {
   .app { flex-direction: column; align-items: stretch; }
-  .controls { width: auto; flex: none; }
+  .controls { flex: none; width: auto; }
   canvas#cover { width: 100%; }
 }
 
-/* ---------------------------------------------------------------- screenshot scenes */
+/* ---------------------------------------------------------------- screenshot scenes
+   ?shot=cover: the rail disappears and the canvas fills the window, letterboxed on the
+   deep-purple the cover's own sky starts from. */
 
 body.shot-cover .controls { display: none; }
-body.shot-cover .app { padding: 0; max-width: none; }
+body.shot-cover .app { max-width: none; padding: 0; }
 body.shot-cover .stage { display: block; }
+
 body.shot-cover canvas#cover {
   width: 100vw;
-  height: 100vh;
   max-width: none;
+  height: 100vh;
+  background: #12041f;
   border-radius: 0;
   box-shadow: none;
   object-fit: contain;
-  background: #12041f;
 }
