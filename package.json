@@ -1,0 +1,15 @@
+{
+  "name": "gta6-cover-art-01-vice-frame",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VICE FRAME: an offline web app that turns photos into GTA 6-style cover art",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node --experimental-strip-types main.ts",
+    "serve": "node --experimental-strip-types serve.ts"
+  }
+}
