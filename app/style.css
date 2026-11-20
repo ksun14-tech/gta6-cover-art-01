@@ -1,18 +1,21 @@
-/* VICE FRAME's stylesheet: a deep-purple editor shell with neon accents, laid out as
-   a fixed control rail beside a fluid stage. The final block restyles the page for
-   screenshot scenes — when body carries .shot-cover, only the artwork remains. */
+/* VICE FRAME — editor styling.
+   A deep-purple shell: a fixed-width control rail on the left, the cover
+   stage filling whatever room is left, neon pink-to-orange accents
+   throughout. The last section restyles the page for screenshot scenes:
+   with .shot-cover on the body, the rail disappears and the artwork
+   letterboxes across the whole window. */
 
 :root {
-  --ink: #0d0618;
-  --rail: #170b2e;
-  --field: #1f0f3d;
-  --line: #3a1c63;
-  --text: #f4eefc;
-  --muted: #b7a8d9;
+  --night: #0d0618;          /* page background, deepest purple */
+  --rail-bg: #170b2e;        /* control rail surface */
+  --field-bg: #1f0f3d;       /* inputs and buttons */
+  --edge: #3a1c63;           /* hairlines and borders */
+  --paper: #f4eefc;          /* primary text */
+  --dim: #b7a8d9;            /* secondary text */
   --pink: #ff2e88;
-  --orange: #ff8a3c;
+  --amber: #ff8a3c;
   --gold: #ffd166;
-  --brand: linear-gradient(92deg, var(--pink), var(--orange));
+  --brand-grad: linear-gradient(92deg, var(--pink), var(--amber));
 }
 
 * { box-sizing: border-box; }
@@ -20,141 +23,22 @@
 html, body {
   margin: 0;
   min-height: 100%;
-  color: var(--text);
-  background: radial-gradient(1200px 700px at 85% -10%, #45136e 0%, var(--ink) 55%);
+  background: radial-gradient(1200px 700px at 85% -10%, #45136e 0%, var(--night) 55%);
+  color: var(--paper);
   font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
+/* ------------------------------------------------------------ page layout */
+
 .app {
   display: flex;
-  gap: 28px;
   align-items: flex-start;
   justify-content: center;
+  gap: 28px;
   max-width: 1460px;
   margin: 0 auto;
   padding: 26px;
 }
-
-/* ---------------------------------------------------------- control rail */
-
-.controls {
-  flex: 0 0 320px;
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 22px 20px;
-  background: linear-gradient(180deg, var(--rail) 0%, var(--ink) 130%);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
-}
-
-.controls h1 {
-  margin: 0;
-  color: #fff;
-  font-family: "Arial Black", "Franklin Gothic Heavy", Impact, sans-serif;
-  font-size: 34px;
-  font-style: italic;
-  letter-spacing: 0.5px;
-}
-
-.controls h1 span {
-  background: var(--brand);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.tagline { margin: 8px 0 0; color: var(--muted); font-size: 13.5px; }
-
-.group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-}
-
-.group h2 {
-  margin: 0;
-  color: var(--gold);
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-size: 13.5px;
-  font-weight: 600;
-}
-
-input[type="text"], select {
-  font: inherit;
-  padding: 8px 10px;
-  color: var(--text);
-  background: var(--field);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-
-input[type="range"] { width: 100%; accent-color: var(--pink); }
-
-button {
-  font: inherit;
-  font-weight: 700;
-  padding: 9px 12px;
-  color: var(--text);
-  background: var(--field);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover { border-color: var(--pink); }
-
-button.primary, .export {
-  color: #fff;
-  background: var(--brand);
-  border: 0;
-}
-
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-
-.samples { display: flex; flex-wrap: wrap; gap: 8px; }
-
-.samples .sample {
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 999px;
-}
-
-.samples .sample:hover { background: var(--line); }
-
-.panel-label { margin: 0; color: #fff; font-weight: 700; }
-
-.hint { margin: 0; color: var(--muted); font-size: 12.5px; }
-
-.export {
-  padding: 13px;
-  font-size: 16px;
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(255, 46, 136, 0.35);
-}
-
-.status { min-height: 1.2em; margin: 0; color: var(--gold); font-size: 13.5px; }
-
-.controls footer {
-  padding-top: 10px;
-  color: var(--muted);
-  font-size: 11.5px;
-  border-top: 1px solid var(--line);
-}
-
-/* ---------------------------------------------------------- the stage */
 
 .stage { flex: 1 1 auto; display: flex; justify-content: center; }
 
@@ -176,9 +60,135 @@ canvas#cover:active { cursor: grabbing; }
   canvas#cover { width: 100%; }
 }
 
-/* ---------------------------------------------------------- screenshot scenes */
+/* ------------------------------------------------------------ control rail */
 
-/* ?shot=cover: rail gone, canvas letterboxed full-window on the cover's own ink. */
+.controls {
+  flex: 0 0 320px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 20px;
+  background: linear-gradient(180deg, var(--rail-bg) 0%, var(--night) 130%);
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+
+.controls h1 {
+  margin: 0;
+  font-family: "Arial Black", "Franklin Gothic Heavy", Impact, sans-serif;
+  font-size: 34px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.controls h1 span {
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tagline { margin: 8px 0 0; font-size: 13.5px; color: var(--dim); }
+
+.controls footer {
+  padding-top: 10px;
+  border-top: 1px solid var(--edge);
+  font-size: 11.5px;
+  color: var(--dim);
+}
+
+/* ------------------------------------------------------------ rail groups */
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--edge);
+}
+
+.group h2 {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.panel-label { margin: 0; font-weight: 700; color: #fff; }
+
+.hint { margin: 0; font-size: 12.5px; color: var(--dim); }
+
+.status { min-height: 1.2em; margin: 0; font-size: 13.5px; color: var(--gold); }
+
+/* ------------------------------------------------------------ form pieces */
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+input[type="text"], select {
+  font: inherit;
+  padding: 8px 10px;
+  color: var(--paper);
+  background: var(--field-bg);
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+}
+
+input[type="range"] { width: 100%; accent-color: var(--pink); }
+
+button {
+  font: inherit;
+  font-weight: 700;
+  padding: 9px 12px;
+  color: var(--paper);
+  background: var(--field-bg);
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover { border-color: var(--pink); }
+
+button.primary, .export {
+  border: 0;
+  color: #fff;
+  background: var(--brand-grad);
+}
+
+.export {
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 16px;
+  box-shadow: 0 8px 24px rgba(255, 46, 136, 0.35);
+}
+
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ------------------------------------------------------------ sample tray */
+
+.samples { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.samples .sample {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.samples .sample:hover { background: var(--edge); }
+
+/* ------------------------------------------------------------ shot scenes */
+
+/* ?shot=cover — the rail is gone and the canvas letterboxes full-window
+   against the cover's own ink colour, so a captured frame is all artwork. */
 body.shot-cover .controls { display: none; }
 body.shot-cover .app { max-width: none; padding: 0; }
 body.shot-cover .stage { display: block; }
